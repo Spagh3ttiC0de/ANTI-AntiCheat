@@ -1,7 +1,7 @@
-@echo off
-Echo Remember to change the path for Helldivers 2 further down.
+pushd "%~dp0"
+set Helldivers2Path=D:\Steam\steamapps\common\Helldivers 2
+Echo Remember to change the path for Helldivers 2 at the very top of this file
 pause
-@echo on
 TASKKILL /F /IM steam.exe /T
 TASKKILL /F /IM steamservice.exe /T
 TASKKILL /F /IM steamwebhelper.exe /T
@@ -160,8 +160,12 @@ rmdir /S /Q "C:\Users\%username%\AppData\Local\Activision\bootstrapper"
 rmdir /S /Q "C:\Users\%username%\AppData\Local\Activision\Call of Duty"
 rmdir /S /Q "C:\Users\%username%\AppData\Roaming\Battle.net\Telemetry"
 
-"U:\SteamLibrary\steamapps\common\Helldivers 2\tools\gguninst.exe" /silent
-rmdir /S /Q "U:\SteamLibrary\steamapps\common\Helldivers 2\bin\GameGuard"
+"%Helldivers2Path%\tools\gguninst.exe" /silent
+rmdir /S /Q "%Helldivers2Path%\bin\GameGuard"
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam\Apps\553850" /v npGameGuard_install /f
+
+"C:\Program Files\EA\AC\EAAntiCheat.Installer.exe" --noui --uninstall
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam\Apps\3081410" /v EAAntiCheatInstall /f
 
 del /F /Q "C:\Windows\xhunter1.sys"
 del /F /Q "C:\Windows\xhunters.log"
@@ -206,3 +210,6 @@ sc delete zksvc
 
 REG DELETE "HKCU\Software\appdatalow\AntiCheatExpert" /f
 REG DELETE "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\AntiCheatExpert" /f
+
+echo remove rem in front below to allow steam to restart after cleaning process
+rem explorer steam:\\
